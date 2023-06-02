@@ -1,23 +1,22 @@
 import React, { useCallback } from "react";
-import styled from "styled-components";
+import styled from "@emotion/styled";
 import { MealsItemForm } from "./MealsItemForm";
 import { useDispatch } from "react-redux";
 import { addItem } from "../../store/basket/basketThunk";
 
-export const MealItem = ({ meal }) => {
+export const MealItem = ({ meal, errorHandler, successHandler }) => {
   const dispatch = useDispatch();
 
-  const addBasket = useCallback(
-    (amount) => {
-      dispatch(addItem({ id: meal._id, amount }))
-        .unwrap()
-        .then(() => {
-          
-        })
-        .catch((error) => error);
-    },
-    [dispatch, meal._id]
-  );
+  const addBasket = async (amount) => {
+    try {
+      await dispatch(addItem({ id: meal._id, amount }))
+        .unwrap();
+        successHandler()
+     
+    } catch (error) {
+      errorHandler();
+    }
+  };
 
   return (
     <StyledItem>
@@ -33,42 +32,42 @@ export const MealItem = ({ meal }) => {
   );
 };
 
-const StyledItem = styled.li`
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #d6d6d6;
-  margin-bottom: 20px;
+const StyledItem = styled("li")(() => ({
+  listStyle: "none",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  borderBottom: "1px solid #d6d6d6",
+  marginBottom: " 20px",
 
-  :last-child {
-    border: none;
-    margin-bottom: -10px;
-  }
-`;
+  "&:last-child": {
+    border: "none",
+    marginBottom: "-10px",
+  },
+}));
 
-const StyledItemInfo = styled.div`
-  margin-bottom: 20px;
+const StyledItemInfo = styled("div")(() => ({
+  marginBottom: "20px",
 
-  span {
-    font-weight: 700;
-    font-size: 20px;
-    line-height: 30px;
-    color: #ad5502;
-    margin-top: 4px;
-  }
-`;
+  span: {
+    fontWeight: 700,
+    fontSize: "20px",
+    lineHeight: " 30px",
+    color: "#ad5502",
+    marginTop: "4px",
+  },
+}));
 
-const DescriptionStyles = styled.p`
-  font-style: italic;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #222222;
-`;
+const DescriptionStyles = styled("p")(() => ({
+  fontStyle: "italic",
+  fontWeight: 400,
+  fontSize: "16px",
+  lineHeight: "24px",
+  color: "#222222",
+}));
 
-const StyledTitle = styled.h4`
-  font-weight: 600;
-  font-size: 18px;
-  color: #222222;
-`;
+const StyledTitle = styled("h4")(() => ({
+  fontWeight: 600,
+  fontSize: " 18px",
+  color: "#222222",
+}));

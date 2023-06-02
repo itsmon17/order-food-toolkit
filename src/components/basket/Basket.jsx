@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Modal } from '../UI/modal/Modal'
 import styled from 'styled-components'
+// import styled from '@emotion/styled'
 import { BasketItem } from './BasketItem'
 import { TotalAmount } from './TotalAmount'
 import { useDispatch, useSelector } from 'react-redux'

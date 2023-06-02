@@ -1,9 +1,10 @@
-import React, { memo } from 'react'
-import styled, { keyframes } from 'styled-components'
+import React, { memo } from "react";
+import styled from "@emotion/styled";
+import { keyframes } from "@emotion/react";
 
 export const Card = memo(({ children }) => {
-  return <CardStyle>{children}</CardStyle>
-})
+  return <CardStyle>{children}</CardStyle>;
+});
 
 const rotate = keyframes`
  from {
@@ -14,14 +15,14 @@ const rotate = keyframes`
       opacity: 1;
       transform: translateY(0);
     }
-`
+`;
 
-const CardStyle = styled.div`
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 16px;
-  max-width: 64.9375rem;
-  margin: 0px auto;
+const CardStyle = styled("div")(() => ({
+  background: " #ffffff",
+  padding: "40px",
+  borderRadius: "16px",
+  maxWidth: "64.9375rem",
+  margin: "0px auto",
 
-  animation: 1s ease-out 0s 1 normal forwards running ${rotate};
-`
+  animation: `1s ease-out 0s 1 normal forwards running ${rotate}`,
+}));

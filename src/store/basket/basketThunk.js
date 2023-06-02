@@ -23,8 +23,11 @@ export const addItem = createAsyncThunk(
         body: { amount: payload.amount },
       });
       dispatch(getBasket());
+      // payload.successHandler();
+
       return await response.items;
     } catch (error) {
+      // payload.errorHandler();
       return rejectWithValue(
         error?.response?.message || "Something went wrong!"
       );

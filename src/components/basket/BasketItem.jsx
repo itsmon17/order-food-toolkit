@@ -12,7 +12,8 @@ export const BasketItem = ({ title, price, amount, id }) => {
     dispatch(incrementFood({ id, amount }));
   };
 
-  const decrementFoodHandler = () => {
+  const decrementFoodHandler = (e) => {
+    e.preventDefault();
     dispatch(decrementFood({ id: id, amount: amount - 1 }));
   };
 
