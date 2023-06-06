@@ -1,12 +1,17 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchRequest } from "../../lib/fetchAPI";
+import {
+  addToBasketRequest,
+  deleteBasketItemRequest,
+  getBasketRequest,
+  updateBasketRequest,
+} from "../../api/mealsService";
 
 export const getBasket = createAsyncThunk(
   "basket/getBasket",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetchRequest("/basket");
-      return response.items;
+      const { data } = await getBasketRequest();
+      return data.data.items;
     } catch (error) {
       return rejectWithValue(
         error?.response?.message || "Something went wrong!"
@@ -18,16 +23,9 @@ export const addItem = createAsyncThunk(
   "basket/addItem",
   async (payload, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetchRequest(`/foods/${payload.id}/addToBasket`, {
-        method: "POST",
-        body: { amount: payload.amount },
-      });
+      await addToBasketRequest(payload);
       dispatch(getBasket());
-      // payload.successHandler();
-
-      return await response.items;
     } catch (error) {
-      // payload.errorHandler();
       return rejectWithValue(
         error?.response?.message || "Something went wrong!"
       );
@@ -36,16 +34,10 @@ export const addItem = createAsyncThunk(
 );
 export const incrementFood = createAsyncThunk(
   "basket/increment",
-  async (payload, { rejectWithValue, dispatch }) => {
+  async ({ id, amount }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await fetchRequest(`/basketItem/${payload.id}/update`, {
-        method: "PUT",
-        body: { amount: payload.amount + 1 },
-      });
-
+      await updateBasketRequest(id, amount);
       dispatch(getBasket());
-
-      return await response.items;
     } catch (error) {
       return rejectWithValue(
         error?.response?.message || "Something went wrong!"
@@ -56,20 +48,11 @@ export const incrementFood = createAsyncThunk(
 
 export const decrementFood = createAsyncThunk(
   "basket/decrement",
-  async (payload, { rejectWithValue, dispatch }) => {
-    if (payload.amount !== 0) {
+  async ({ id, amount }, { rejectWithValue, dispatch }) => {
+    if (amount !== 0) {
       try {
-        const response = await fetchRequest(
-          `/basketItem/${payload.id}/update`,
-          {
-            method: "PUT",
-            body: { amount: payload.amount },
-          }
-        );
-
+        await updateBasketRequest(id, amount);
         dispatch(getBasket());
-
-        return await response.items;
       } catch (error) {
         return rejectWithValue(
           error?.response?.message || "Something went wrong!"
@@ -77,16 +60,8 @@ export const decrementFood = createAsyncThunk(
       }
     } else {
       try {
-        const response = await fetchRequest(
-          `/basketItem/${payload.id}/delete`,
-          {
-            method: "DELETE",
-          }
-        );
-
+        deleteBasketItemRequest(id);
         dispatch(getBasket());
-
-        return await response.items;
       } catch (error) {
         return rejectWithValue(
           error?.response?.message || "Something went wrong!"

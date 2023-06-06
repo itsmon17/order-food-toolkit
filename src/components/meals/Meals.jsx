@@ -39,7 +39,7 @@ export const Meals = () => {
   function errorHandler() {
     setSnackbar((prev) => ({
       ...prev,
-      open: true ,
+      open: true,
       severity: "error",
       message: "Something went wrong",
     }));

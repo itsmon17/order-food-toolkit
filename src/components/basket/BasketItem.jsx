@@ -8,10 +8,10 @@ import { useDispatch } from "react-redux";
 export const BasketItem = ({ title, price, amount, id }) => {
   const dispatch = useDispatch();
 
-  const incrementFoodHandler = () => {
-    dispatch(incrementFood({ id, amount }));
+  const incrementFoodHandler = (e) => {
+    e.preventDefault();
+    dispatch(incrementFood({ id, amount: amount + 1 }));
   };
-
   const decrementFoodHandler = (e) => {
     e.preventDefault();
     dispatch(decrementFood({ id: id, amount: amount - 1 }));

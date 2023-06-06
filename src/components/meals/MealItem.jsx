@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { MealsItemForm } from "./MealsItemForm";
 import { useDispatch } from "react-redux";
@@ -9,10 +9,8 @@ export const MealItem = ({ meal, errorHandler, successHandler }) => {
 
   const addBasket = async (amount) => {
     try {
-      await dispatch(addItem({ id: meal._id, amount }))
-        .unwrap();
-        successHandler()
-     
+      await dispatch(addItem({ id: meal._id, amount })).unwrap();
+      successHandler();
     } catch (error) {
       errorHandler();
     }
@@ -48,7 +46,6 @@ const StyledItem = styled("li")(() => ({
 
 const StyledItemInfo = styled("div")(() => ({
   marginBottom: "20px",
-
   span: {
     fontWeight: 700,
     fontSize: "20px",
